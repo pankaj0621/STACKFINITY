@@ -2,25 +2,49 @@ import io
 from config import PYMUPDF_AVAILABLE, TESSERACT_AVAILABLE, PANDAS_AVAILABLE
 
 if PYMUPDF_AVAILABLE: import fitz
-if TESSERACT_AVAILABLE: 
+if TESSERACT_AVAILABLE:
     import pytesseract
     from pdf2image import convert_from_bytes
 if PANDAS_AVAILABLE: import pandas as pd
 
 def extract_text_from_pdf(content: bytes) -> str:
+    # Method 1: PyMuPDF
     if PYMUPDF_AVAILABLE:
         try:
             doc = fitz.open(stream=content, filetype="pdf")
             text = "".join(page.get_text() for page in doc)
             doc.close()
-            if len(text.strip()) > 100: return text.strip()
-        except Exception: pass
+            if len(text.strip()) > 100:
+                return text.strip()
+        except Exception:
+            pass
 
+    # Method 2: pdfplumber (tables ke liye best)
+    try:
+        import pdfplumber
+        with pdfplumber.open(io.BytesIO(content)) as pdf:
+            text = ""
+            for page in pdf.pages:
+                tables = page.extract_tables()
+                for table in tables:
+                    for row in table:
+                        text += " | ".join([str(c) if c else "" for c in row]) + "\n"
+                text += page.extract_text() or ""
+            if len(text.strip()) > 100:
+                return text.strip()
+    except Exception:
+        pass
+
+    # Method 3: Tesseract OCR (scanned PDF ke liye)
     if TESSERACT_AVAILABLE:
         try:
             images = convert_from_bytes(content, dpi=200)
-            return "".join(pytesseract.image_to_string(img, lang="eng") for img in images).strip()
-        except Exception: pass
+            return "".join(
+                pytesseract.image_to_string(img, lang="eng") for img in images
+            ).strip()
+        except Exception:
+            pass
+
     return ""
 
 def extract_text_from_spreadsheet(content: bytes, filename: str) -> str:
