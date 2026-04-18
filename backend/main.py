@@ -87,7 +87,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://finsight-brown-mu.vercel.app", 
+        "https://stackfinity.vercel.app", 
         "http://localhost:5173",
         "http://localhost:3000",
     ],
