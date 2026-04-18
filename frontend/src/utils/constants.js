@@ -3,7 +3,7 @@
 //  Original theme: Deep Slate + Amber Gold
 // =============================================================================
 
-export const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
+export const API_BASE = "https://stackfinity.onrender.com";
 
 export const DEMOS = {
   "Healthy SME":   {companyName:"TechVentures Pvt Ltd",industry:"Technology",revenue:"5000000",prevRevenue:"4200000",netProfit:"750000",totalAssets:"8000000",totalLiabilities:"2400000",currentAssets:"3200000",currentLiabilities:"1500000",inventory:"400000",operatingExpenses:"3800000"},
