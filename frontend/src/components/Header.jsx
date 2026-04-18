@@ -68,7 +68,7 @@ export default function Header({ apiStatus }) {
           <div className="logo-mark">FS</div>
           <div>
             <div className="logo-name">Fin<em>Sight</em></div>
-            <div className="logo-tag">SME Financial Analytics v4</div>
+            <div className="logo-tag">SME Financial Analytics</div>
           </div>
         </div>
         <div className="header-right">
